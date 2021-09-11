@@ -11,10 +11,15 @@ export default defineConfig({
   routes,
   fastRefresh: {},
   cssLoader: { modules: false },
-  webpack5: {},
-  esbuild: {
-    target: 'es5',
-  },
+  dynamicImport: {},
+  ...(process.env.NODE_ENV === 'production'
+    ? {}
+    : {
+        webpack5: {},
+        esbuild: {
+          target: 'es5',
+        },
+      }),
   mfsu: {},
   devServer: {
     host: '0.0.0.0',
