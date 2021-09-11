@@ -1,0 +1,45 @@
+@import '../../styles/vars.less';
+
+.@{prefix}-compress {
+  &-top {
+    height: 350px;
+    background: linear-gradient(to bottom, #c6dde4, #fefeff);
+    width: 100%;
+    padding-top: 34px;
+
+    .@{prefix}-inner {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+    }
+  }
+
+  & &-dragger {
+    width: 340px;
+    height: 180px;
+    margin: 10px auto;
+    background: transparent;
+    border: 2px dashed #616778;
+    border-radius: 8px;
+
+    .anticon {
+      font-size: 50px;
+      margin-bottom: 8px;
+    }
+
+    &-title {
+      font-size: 18px;
+      line-height: 20px;
+      margin: 20px 2px 5px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    &-desc {
+      line-height: 13px;
+      text-align: center;
+      font-size: 12px;
+      margin-top: 10px;
+    }
+  }
+}

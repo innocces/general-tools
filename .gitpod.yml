@@ -1,0 +1,12 @@
+tasks:
+  - name: dependencies
+    init: >
+      npm i tyarn -g && tyarn
+      gp sync-done bundle
+  - name: dev server
+    init: gp sync-await bundle
+    command: tyarn start
+
+ports:
+  - port: 12345
+    onOpen: open-preview

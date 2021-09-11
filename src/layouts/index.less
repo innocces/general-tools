@@ -1,0 +1,120 @@
+@import '../styles/vars.less';
+@inner: 1400px;
+
+.@{prefix}-inner {
+  width: @inner;
+  height: 100%;
+  margin: 0 auto;
+}
+
+.@{prefix}-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: ~'calc(100vh - 64px)';
+}
+
+.@{prefix}-layout {
+  min-height: 100vh;
+  padding-top: 64px;
+}
+
+.@{prefix}-navbar {
+  position: fixed;
+  z-index: 101;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 58px;
+  height: 64px;
+  white-space: nowrap;
+  background: #fff;
+  box-shadow: 0 8px 24px -2px fade(black, 5%);
+
+  &-logo {
+    display: inline-block;
+    height: 56px;
+    width: 420px;
+    color: #080e29;
+    font-weight: 500;
+    text-decoration: none;
+    font-size: 24px;
+    line-height: 40px;
+    background: url(https://cdn.jsdelivr.net/gh/innocces/DrawingBed/2021-9-12/1631376432067-general-logo.png)
+      no-repeat 0 / contain;
+  }
+
+  nav {
+    > span {
+      position: relative;
+      margin-left: 40px;
+      display: inline-block;
+      color: #454d64;
+      height: 64px;
+      cursor: pointer;
+      font-size: 14px;
+      line-height: 64px;
+      text-decoration: none;
+      letter-spacing: 0;
+      > a {
+        color: #4d5164;
+        text-decoration: none;
+
+        &::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          right: -18px;
+          left: -18px;
+        }
+      }
+    }
+  }
+}
+
+.@{prefix}-external-link-icon {
+  vertical-align: -0.155em;
+  margin-left: 2px;
+}
+
+svg:not(:root) {
+  overflow: hidden;
+}
+
+.@{prefix}-list {
+  margin: 60px auto;
+
+  &-item {
+    text-align: center;
+    margin-bottom: 60px;
+    cursor: pointer;
+    transition: all 0.5s;
+
+    &:hover {
+      box-shadow: 0 8px 24px -2px #f8fbff;
+    }
+
+    img {
+      width: 60px;
+      height: 60px;
+    }
+
+    h3 {
+      font-size: 20px;
+      line-height: 1;
+      margin: 20px 0;
+      color: fade(black, 65%);
+    }
+
+    p {
+      margin-bottom: 1em;
+      font-size: 14px;
+      color: #697b8c;
+      line-height: 22px;
+    }
+  }
+}
