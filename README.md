@@ -6,5 +6,9 @@
 
 一个工具网站
 
+### Feature
+- [x] 压缩图片
+
+
 ## License
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Finnocces%2Fgeneral-tools.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Finnocces%2Fgeneral-tools?ref=badge_large)
