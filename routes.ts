@@ -10,6 +10,11 @@ const routes = [
         component: '@/pages/compressImage',
         exact: true,
       },
+      {
+        path: '/drawer-bed',
+        component: '@/pages/drawerBed',
+        exact: true,
+      },
       { component: '@/pages/404' },
     ],
   },

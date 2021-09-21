@@ -1,0 +1,34 @@
+@import '../../styles/vars.less';
+@gap: 20px;
+.@{prefix}-drawer {
+  padding-top: @gap;
+
+  &-margin {
+    margin-top: @gap;
+  }
+
+  &-block {
+    width: 95%;
+  }
+
+  &-upload {
+    margin-top: @gap;
+    height: 200px !important;
+
+    .anticon-select {
+      font-size: 40px;
+    }
+
+    &-icon {
+      margin-top: 8px;
+      width: 100%;
+      height: 66px;
+      line-height: 66px;
+      border-width: 1px 1px 1px 0;
+      border-color: #d9d9d9;
+      border-style: solid;
+      border-radius: 0 2px 2px;
+      cursor: pointer;
+    }
+  }
+}

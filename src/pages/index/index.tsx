@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import { Button, Row, Col } from 'antd';
 import { history } from 'umi';
+import { MENULIST } from '@/constant/menu';
 import './index.less';
 
 const Index = () => {
@@ -21,17 +22,18 @@ const Index = () => {
       </div>
       <div className="__general_tools-inner __general_tools-list">
         <Row gutter={[16, 16]}>
-          <Col
-            className="__general_tools-list-item"
-            span={8}
-            onClick={() => navigate('/compress-image')}
-          >
-            <img src="/images/pic.png" />
-            <h3>图片压缩</h3>
-            <p>基于 compressor 进行图片压缩</p>
-          </Col>
-          <Col className="__general_tools-list-item" span={8} />
-          <Col className="__general_tools-list-item" span={8} />
+          {MENULIST.map(({ icon, route, title, description }, index) => (
+            <Col
+              key={index}
+              className="__general_tools-list-item"
+              span={8}
+              onClick={() => navigate(route)}
+            >
+              <img src={icon} />
+              <h3>{title}</h3>
+              <p>{description}</p>
+            </Col>
+          ))}
         </Row>
       </div>
     </div>

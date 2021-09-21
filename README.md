@@ -8,6 +8,7 @@
 
 ### Feature
 - [x] 压缩图片
+- [x] GitHub 图床
 
 
 ## License
