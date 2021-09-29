@@ -12,6 +12,13 @@ export default defineConfig({
   fastRefresh: {},
   cssLoader: { modules: false },
   dynamicImport: {},
+  ...(process.env.BUILD_TARGET === 'GH'
+    ? {
+        publicPath: '/general-tools/',
+        base: '/general-tools',
+        history: { type: 'hash' },
+      }
+    : {}),
   ...(process.env.NODE_ENV === 'production'
     ? {}
     : {
