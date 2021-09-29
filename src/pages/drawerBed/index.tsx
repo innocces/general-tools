@@ -161,12 +161,13 @@ const DrawerBed = () => {
       } else {
         settings.push(currentSetting);
       }
+      setItem(GITHUBLOCALKEY, settings);
+      setGithubSettings(settings);
+      setModalVisible(false);
       if (!chooseGithub) {
         const currentChooseGithub = settings[0].repo;
         handleGithubChooseChange(currentChooseGithub);
       }
-      setItem(GITHUBLOCALKEY, settings);
-      setModalVisible(false);
       message.success(modalMode === 'add' ? '添加成功!' : '修改成功!');
     },
     [modalMode, githubSettings, chooseGithub],
