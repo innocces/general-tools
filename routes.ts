@@ -15,6 +15,11 @@ const routes = [
         component: '@/pages/drawerBed',
         exact: true,
       },
+      {
+        path: '/base-64',
+        component: '@/pages/base-64',
+        exact: true,
+      },
       { component: '@/pages/404' },
     ],
   },

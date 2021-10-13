@@ -1,8 +1,15 @@
-export const fileToBase64 = (file: File): Promise<string> => {
+import type { UploadFile } from 'antd/lib/upload/interface';
+export const fileToBase64 = (
+  file: File | UploadFile<any>,
+): Promise<string[]> => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = (e) => resolve((e?.target?.result as string).split(',')[1]);
+    reader.readAsDataURL(file as File);
+    reader.onload = (e) =>
+      resolve([
+        (e?.target?.result as string).split(',')[1],
+        e?.target?.result as string,
+      ]);
     reader.onerror = (e) => reject(e);
   });
 };

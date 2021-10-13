@@ -11,4 +11,10 @@ export const MENULIST = [
     title: 'GitHub 图床',
     description: '利用GitHub + jsdelivr生成图床',
   },
+  {
+    route: '/base-64',
+    icon: '/images/base64.png',
+    title: '图片转BASE64',
+    description: '将突变转化为BASE64',
+  },
 ];

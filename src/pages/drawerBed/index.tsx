@@ -193,7 +193,7 @@ const DrawerBed = () => {
       (async () => {
         const path =
           moment().format('YYYY-MM-DD') + '/' + Date.now() + '-' + file.name;
-        const content = await fileToBase64(file);
+        const content = (await fileToBase64(file))[0];
         try {
           const payload = {
             ...repo,
