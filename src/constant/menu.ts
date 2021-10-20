@@ -15,6 +15,6 @@ export const MENULIST = [
     route: '/base-64',
     icon: '/images/base64.png',
     title: '图片转BASE64',
-    description: '将突变转化为BASE64',
+    description: '将图片转化为BASE64',
   },
 ];
