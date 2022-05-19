@@ -10,20 +10,26 @@ import {
   Image,
 } from 'antd';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { InboxOutlined } from '@ant-design/icons';
 
 import type { UploadFile } from 'antd/lib/upload/interface';
 
 import { fileToBase64 } from '@/utils';
 
 import './index.less';
+
 const Base64 = () => {
   const [base64, setBase64] = useState<string>();
   const [file, setFile] = useState<UploadFile<any>>();
+  const [uploaded, setUploaded] = useState<boolean>(false);
 
   useEffect(() => {
     if (file) {
       fileToBase64(file)
-        .then((transform) => setBase64(transform[1]))
+        .then((transform) => {
+          setBase64(transform[1]);
+          message.success('转换完成，可以点击右侧复制');
+        })
         .catch((e) => {
           message.error('转换错误, 请重新选择!');
         });
@@ -41,15 +47,24 @@ const Base64 = () => {
             beforeUpload={() => false}
             accept=".png,.jpg,.jpeg,.PNG,.JPG,.JPEG"
             showUploadList={false}
-            onChange={({ file: changeFile }) => setFile(changeFile)}
+            onChange={({ file: changeFile }) => {
+              setUploaded(true);
+              setFile(changeFile);
+            }}
           >
-            <Image
-              className="__general_tools-base-item-fill-img"
-              width="95%"
-              height="95%"
-              src={base64 || '/images/base64.png'}
-              preview={false}
-            />
+            {uploaded ? (
+              <Image
+                className="__general_tools-base-item-fill-img"
+                width="95%"
+                height="95%"
+                src={base64}
+                preview={false}
+              />
+            ) : (
+              <div className="__general_tools-base-item-background">
+                <InboxOutlined className="__general_tools-base-item-background-icon" />
+              </div>
+            )}
             <p>点击上传图片进行转换 ✨</p>
           </Upload.Dragger>
         </Col>

@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { Button, Row, Col } from 'antd';
+import { Button, Row, Col, message } from 'antd';
 import { history } from 'umi';
 import { MENULIST } from '@/constant/menu';
 import './index.less';
@@ -9,6 +9,10 @@ const Index = () => {
     history.push(href);
   }, []);
 
+  const begin = useCallback(() => {
+    message.info('如果我知道该给ta加点啥功能，那ta应该是有用的');
+  }, []);
+
   return (
     <div className="__general_tools-layout-content">
       <div className="__general_tools-layout-content-banner">
@@ -16,7 +20,9 @@ const Index = () => {
           <h1>General Tools</h1>
           <p>一个工具网站</p>
           <div className="__general_tools-layout-content-buttons">
-            <Button type="primary">开始使用</Button>
+            <Button type="primary" onClick={begin}>
+              开始使用
+            </Button>
           </div>
         </div>
       </div>
