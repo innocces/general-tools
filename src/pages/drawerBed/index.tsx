@@ -14,18 +14,33 @@ import {
   Comment,
   Avatar,
   Tooltip,
+  Switch,
 } from 'antd';
 import moment from 'moment';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { SelectOutlined, CopyOutlined } from '@ant-design/icons';
 
-import type { IGithubSetting, TMode, IAddGithubModalProps } from './type';
+import type {
+  IGithubSetting,
+  TMode,
+  IAddGithubModalProps,
+  SpecialFile,
+} from './type';
 import type { IRecord } from '@/type';
 
 import { getItem, setItem } from '@/utils/storage';
-import { GITHUBCHOOSELOCALKEY, GITHUBLOCALKEY } from '@/constant';
+import {
+  GITHUBCHOOSELOCALKEY,
+  GITHUBLOCALKEY,
+  GITHUBSPECIALFILE,
+} from '@/constant';
 import { fileToBase64, generateJsDelivrUrl } from '@/utils';
-import { getRepo, createCommit } from '@/service/github';
+import {
+  getRepo,
+  createCommit,
+  getContent,
+  ICreateCommitOption,
+} from '@/service/github';
 import './index.less';
 import { UploadFile } from 'antd/lib/upload/interface';
 
@@ -100,9 +115,11 @@ const AddGithubModal: FC<IAddGithubModalProps> = ({
 const DrawerBed = () => {
   const [githubSettings, setGithubSettings] = useState<IGithubSetting[]>([]);
   const [chooseGithub, changeChooseGithub] = useState<string>();
+  const [specialFile, setSpecialFile] = useState<Partial<SpecialFile>>();
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [modalMode, setModalMode] = useState<TMode>('add');
   const [repoInfo, setRepoInfo] = useState<IRecord>();
+  const [openSpecial, setOpenSpecial] = useState<boolean>(false);
 
   useEffect(() => {
     getGithubSettings();
@@ -142,6 +159,8 @@ const DrawerBed = () => {
     let githubChoose = getItem(GITHUBCHOOSELOCALKEY);
     if (!githubChoose && (info as IGithubSetting[])?.length) {
       githubChoose = (info as IGithubSetting[])[0].repo;
+      const storageSpecialFile = getItem(GITHUBSPECIALFILE);
+      storageSpecialFile && setSpecialFile(storageSpecialFile as SpecialFile);
     }
     githubChoose && handleGithubChooseChange(githubChoose as string);
     info && setGithubSettings(info as IGithubSetting[]);
@@ -191,16 +210,34 @@ const DrawerBed = () => {
       const { user: owner, ...repo } =
         getCurrentChooseGithub() as IGithubSetting;
       (async () => {
-        const path =
+        let path =
           moment().format('YYYY-MM-DD') + '/' + Date.now() + '-' + file.name;
+        let sha;
+        if (openSpecial && specialFile?.dir) {
+          try {
+            const previewResult = await getContent({
+              ...repo,
+              owner,
+              path: specialFile.dir + '/' + specialFile.name,
+              content: '',
+            });
+            sha = previewResult.sha;
+            path = specialFile.dir + '/' + specialFile.name;
+          } catch (e) {
+            console.log('preview content not sutiable!');
+          }
+
+          setItem(GITHUBSPECIALFILE, specialFile);
+        }
         const content = (await fileToBase64(file))[0];
         try {
-          const payload = {
+          const payload: ICreateCommitOption = {
             ...repo,
             owner,
             content,
             path,
           };
+          if (sha) payload.sha = sha;
           const responese = await createCommit(payload);
           const cdnUrl = generateJsDelivrUrl(payload);
           onProgress({ percent: 100 }, file);
@@ -220,7 +257,13 @@ const DrawerBed = () => {
         },
       };
     },
-    [chooseGithub, githubSettings, getCurrentChooseGithub],
+    [
+      chooseGithub,
+      githubSettings,
+      getCurrentChooseGithub,
+      openSpecial,
+      specialFile,
+    ],
   );
 
   return (
@@ -284,6 +327,41 @@ const DrawerBed = () => {
           </Button>
         </Col>
       </Row>
+      <Row justify="center" align="middle" className="__general_tools-drawer">
+        <Col span={3}>
+          <span>是否指定上传文件: </span>
+        </Col>
+        <Col span={2}>
+          <Switch
+            checked={openSpecial}
+            checkedChildren="使用"
+            unCheckedChildren="未使用"
+            onChange={(checked) => setOpenSpecial(checked)}
+          />
+        </Col>
+        <Col span={6}>
+          <Input
+            disabled={!openSpecial}
+            className="__general_tools-drawer-block"
+            placeholder="请输入文件夹"
+            value={specialFile?.dir}
+            onChange={(e) =>
+              setSpecialFile({ ...(specialFile ?? {}), dir: e.target.value })
+            }
+          />
+        </Col>
+        <Col span={6}>
+          <Input
+            disabled={!openSpecial}
+            className="__general_tools-drawer-block"
+            placeholder="请输入文件名"
+            value={specialFile?.name}
+            onChange={(e) =>
+              setSpecialFile({ ...(specialFile ?? {}), name: e.target.value })
+            }
+          />
+        </Col>
+      </Row>
       {repoInfo?.id ? (
         <Row justify="center">
           <Col span={17}>
@@ -315,7 +393,7 @@ const DrawerBed = () => {
             onPreview={(file: UploadFile<{ cdnUrl: string }>) => {
               window.open(
                 file?.response?.cdnUrl ||
-                  window.URL.createObjectURL(file.originFileObj),
+                  window.URL.createObjectURL(file.originFileObj!),
               );
             }}
             itemRender={(originNode, file) => (

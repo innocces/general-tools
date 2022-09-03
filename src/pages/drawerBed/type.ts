@@ -7,8 +7,13 @@ export interface IGithubSetting {
 
 export type TMode = 'add' | 'modifiy';
 
-export interface IAddGithubModalProps extends ModalProps {
+export interface IAddGithubModalProps extends Omit<ModalProps, 'onOk'> {
   chooseGithub: IGithubSetting;
   mode: TMode;
   onOk: (setting: IGithubSetting) => void;
 }
+
+export type SpecialFile = {
+  dir: string;
+  name: string;
+};

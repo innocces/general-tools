@@ -27,19 +27,28 @@ export interface IBaseOption {
 export interface ICreateCommitOption extends IBaseOption {
   path: string;
   content: string;
+  sha?: string;
 }
 
 export const createCommit = (option: ICreateCommitOption) => {
-  const { content } = option;
+  const { content, sha } = option;
   const url = generateCommitUrl(option);
-  const body = {
+  const body: Record<string, any> = {
     content,
     message: 'files(content): general tools commit',
   };
+  if (sha) {
+    body.sha = sha;
+  }
   return fetchForGithub(url, {
     method: 'PUT',
     body: JSON.stringify(body),
   });
+};
+
+export const getContent = (option: ICreateCommitOption) => {
+  const url = generateCommitUrl(option);
+  return fetchForGithub(url);
 };
 
 export const generateCommitUrl = (
